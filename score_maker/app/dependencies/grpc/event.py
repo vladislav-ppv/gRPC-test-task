@@ -1,8 +1,8 @@
 import grpc
 from google.protobuf.json_format import MessageToDict
 
-from score_maker.protos.line_provider_pb2_grpc import EventServiceStub
-from score_maker.protos.line_provider_pb2 import GetEventsRequest, GetEventsResponse
+from score_maker.pb.line_provider_pb2_grpc import EventServiceStub
+from score_maker.pb.line_provider_pb2 import GetEventsRequest, GetEventsResponse
 
 
 async def get_events_grpc():

@@ -3,8 +3,8 @@ from concurrent import futures
 
 import grpc
 
-from protos.line_provider_pb2_grpc import add_EventServiceServicer_to_server
-from services.event import BaseEventServicer
+from line_provider.app.services.event import BaseEventServicer
+from line_provider.pb.line_provider_pb2_grpc import add_EventServiceServicer_to_server
 
 
 class EventServicer(BaseEventServicer):

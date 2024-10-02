@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import score_maker.protos.line_provider_pb2 as line__provider__pb2
+import line_provider.pb.line_provider_pb2 as line__provider__pb2
 
 GRPC_GENERATED_VERSION = '1.66.2'
 GRPC_VERSION = grpc.__version__

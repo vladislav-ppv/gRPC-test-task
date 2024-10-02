@@ -1,8 +1,7 @@
 import datetime
-import time
 
-from line_provider.protos.line_provider_pb2_grpc import EventServiceServicer
-from line_provider.protos.line_provider_pb2 import GetEventsResponse, Event, StatusEnum
+from line_provider.pb.line_provider_pb2_grpc import EventServiceServicer
+from line_provider.pb.line_provider_pb2 import GetEventsResponse, Event, StatusEnum
 
 
 class BaseEventServicer(EventServiceServicer):

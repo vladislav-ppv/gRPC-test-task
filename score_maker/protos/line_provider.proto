@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+enum StatusEnum {
+    STATUS_PROCESSING = 0;
+    STATUS_LOW_SCORE = 1;
+    STATUS_HIGH_SCORE = 2;
+}
+
+message Event {
+    int32 event_id = 1;
+    google.protobuf.Timestamp deadline = 2;
+    StatusEnum status = 3;
+}
+
+message GetEventsRequest {}
+
+message GetEventsResponse {
+    repeated Event events = 1;
+}
+
+service EventService {
+    rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
+}
