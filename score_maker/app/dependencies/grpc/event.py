@@ -12,6 +12,8 @@ async def get_events_grpc():
         return MessageToDict(
             response,
             preserving_proto_field_name=True,
-        )
-        # return response.events
+            always_print_fields_with_no_presence=True,
+            use_integers_for_enums=True
+        ).get("events")
+
 
