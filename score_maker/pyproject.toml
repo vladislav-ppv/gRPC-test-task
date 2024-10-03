@@ -10,6 +10,8 @@ fastapi = {extras = ["standard"], version = "^0.115.0"}
 SQLAlchemy = "^2.0.35"
 grpcio = "^1.66.2"
 grpcio-tools = "^1.66.2"
+asyncpg = "^0.29.0"
+pydantic-settings = "^2.5.2"
 
 
 [build-system]
