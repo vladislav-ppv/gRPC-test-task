@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "celery-services"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.*"
+redis = "^5.1.0"
+sqlalchemy = "^2.0.35"
+pydantic-settings = "^2.5.2"
+asyncpg = "^0.29.0"
+arq = "^0.26.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
