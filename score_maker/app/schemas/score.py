@@ -14,7 +14,7 @@ class Score(BaseModel):
 
 
 class ScoreWithStats(Score):
-    status: ScoreStatusEnum
+    status: ScoreStatusEnum | None = None
 
 
 class SetScoreRequest(ScoreWithStats):
