@@ -5,12 +5,17 @@ services:
     ports:
       - "8001:8000"
 
-#  score-maker:
-#    build:
-#      context: ./score_maker
-#    ports:
-#      - "8002:8000"
-#    command: poetry run uvicorn score_maker.main:app --host 0.0.0.0 --port 8000
+  celery-beat:
+    build:
+      dockerfile: beat.Dockerfile
+    depends_on:
+      - redis
+
+  celery-worker:
+    build:
+      dockerfile: worker.Dockerfile
+    depends_on:
+      - redis
 
   redis:
     image: redis:alpine
@@ -20,8 +25,8 @@ services:
   postgres:
     image: postgres:alpine
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: score_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
