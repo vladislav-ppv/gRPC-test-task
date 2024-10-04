@@ -6,7 +6,7 @@ from score_maker.pb.line_provider_pb2 import GetEventsRequest, GetEventsResponse
 
 
 async def get_events_grpc():
-    async with grpc.aio.insecure_channel('localhost:50051') as channel:
+    async with grpc.aio.insecure_channel('line-provider:50051') as channel:
         stub = EventServiceStub(channel)
         response: GetEventsResponse = await stub.GetEvents(GetEventsRequest())
         return MessageToDict(

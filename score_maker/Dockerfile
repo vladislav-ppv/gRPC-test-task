@@ -1,15 +1,13 @@
 FROM python:3.10-slim
 
-WORKDIR /src
+WORKDIR /score_maker
 
-COPY pyproject.toml poetry.lock* /src/
+COPY pyproject.toml /score_maker/
 
-# Установка Poetry
 RUN pip install poetry
 
-# Установка зависимостей
 RUN poetry install --no-dev
 
-COPY .. /src/
+COPY . /score_maker/
 
 CMD ["poetry", "run", "fastapi", "run", "main.py", "--host", "0.0.0.0", "--port", "8000"]
