@@ -2,18 +2,24 @@ services:
   line-provider:
     build:
       context: ./line_provider
+    volumes:
+      - ./line_provider:/line_provider
     ports:
       - "8001:8000"
 
-  celery-beat:
+  arq-cron:
     build:
-      dockerfile: beat.Dockerfile
+      dockerfile: arq_cron.Dockerfile
+    volumes:
+      - ./arq_cron:/app
     depends_on:
       - redis
 
-  celery-worker:
+  arq-worker:
     build:
-      dockerfile: worker.Dockerfile
+      dockerfile: arq_worker.Dockerfile
+    volumes:
+      - ./arq-worker:/app
     depends_on:
       - redis
 
