@@ -4,8 +4,14 @@ services:
       context: ./line_provider
     volumes:
       - ./line_provider:/line_provider
+
+  score-maker:
+    build:
+      context: ./score_maker
+    volumes:
+      - ./score_maker:/score_maker
     ports:
-      - "8001:8000"
+      - "8002:8000"
 
   arq-cron:
     build:
