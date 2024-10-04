@@ -2,6 +2,7 @@ import dotenv
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings as BaseSettings_, SettingsConfigDict
 from sqlalchemy import URL
+from arq.connections import RedisSettings as RedisSettings_
 
 
 class BaseSettings(BaseSettings_):
@@ -27,6 +28,7 @@ class RedisSettings(BaseSettings):
 
     def build_url(self) -> str:
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+
 
 
 class PostgresSettings(BaseSettings, env_prefix="POSTGRES_"):
