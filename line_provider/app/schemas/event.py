@@ -3,7 +3,7 @@ from enum import Enum
 
 from pydantic import BaseModel, Field
 
-from score_maker.pb.line_provider_pb2 import StatusEnum as _StatusEnum
+from line_provider.pb.line_provider_pb2 import StatusEnum as _StatusEnum
 
 
 # Перевод Protobuf Enum в Python Enum
