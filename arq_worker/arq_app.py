@@ -1,21 +1,20 @@
 import logging
 
 import redis
+from arq import cron, Retry
+from arq.connections import RedisSettings
 from celery import Celery
-from celery.utils.log import get_task_logger
+from sqlalchemy import select
 
 from src.database.core import async_session
 from src.database.models import ScoreOutboxModel
 from src.config import settings
 
-logger = get_task_logger(__name__)
-app = Celery('outbox_checker', broker=settings.celery_settings.build_celery_broker_url(),
-             backend=settings.celery_settings.build_celery_backend_url())
+logger = logging.getLogger(__name__)
 redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 
-@app.task(bind=True, max_retries=5)
-async def process_score(self, event_id: int, rate: int):
+async def process_score(ctx, event_id: int, rate: int):
     """
     Process a score for a given event_id.
 
@@ -54,27 +53,35 @@ async def process_score(self, event_id: int, rate: int):
 
     except Exception as e:
         logger.error(f"An error occurred while processing score for event_id {event_id}. Retrying.", exc_info=e)
-        raise self.retry(exc=e, countdown=10)
+        raise Retry(defer=ctx['job_try'] * 5)
 
     finally:
         # Release lock
         await redis_client.delete(lock_key)
 
 
-@app.task
-async def check_outbox():
+async def check_outbox(ctx):
     async with async_session() as session:
-        query = session.query(ScoreOutboxModel).filter_by(processed=False)
+        query = select(ScoreOutboxModel).filter_by(processed=False)
         result = await session.execute(query)
         scores: list[ScoreOutboxModel] = result.scalars().all()
         logging.info(scores)
 
         for score in scores:
             # Отправляем задачу на обработку в Worker
-            app.send_task("process_score", args=(score.event_id, score.rate))
+            logging.info("MOCK sending task to process_score")
+            # app.send_task("process_score", args=(score.event_id, score.rate))
 
             # Обновляем статус обработки
             score.processed = True
             session.add(score)
 
         await session.commit()
+
+
+class WorkerSettings:
+    functions = [check_outbox, process_score]
+    redis_settings: RedisSettings = RedisSettings()
+    cron_jobs = [
+        cron(check_outbox, name="Check outbox table every 5 seconds", second=5)
+    ]
