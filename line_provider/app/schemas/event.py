@@ -15,3 +15,7 @@ class StatusEnum(Enum):
 
 class BaseEvent(BaseModel):
     event_id: int
+
+class EventWithDeadlineAndStatus(BaseEvent):
+    deadline: datetime
+    status: StatusEnum
