@@ -35,3 +35,17 @@ class GetEventsResponse(_message.Message):
     EVENTS_FIELD_NUMBER: _ClassVar[int]
     events: _containers.RepeatedCompositeFieldContainer[Event]
     def __init__(self, events: _Optional[_Iterable[_Union[Event, _Mapping]]] = ...) -> None: ...
+
+class UpdateEventStatusByScoreRequest(_message.Message):
+    __slots__ = ("event_id", "score")
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    SCORE_FIELD_NUMBER: _ClassVar[int]
+    event_id: int
+    score: int
+    def __init__(self, event_id: _Optional[int] = ..., score: _Optional[int] = ...) -> None: ...
+
+class UpdateEventStatusByScoreResponse(_message.Message):
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...

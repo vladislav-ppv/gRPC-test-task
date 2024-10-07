@@ -25,21 +25,25 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13line_provider.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"d\n\x05\x45vent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\x05\x12,\n\x08\x64\x65\x61\x64line\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x06status\x18\x03 \x01(\x0e\x32\x0b.StatusEnum\"\x12\n\x10GetEventsRequest\"+\n\x11GetEventsResponse\x12\x16\n\x06\x65vents\x18\x01 \x03(\x0b\x32\x06.Event*P\n\nStatusEnum\x12\x15\n\x11STATUS_PROCESSING\x10\x00\x12\x14\n\x10STATUS_LOW_SCORE\x10\x01\x12\x15\n\x11STATUS_HIGH_SCORE\x10\x02\x32\x42\n\x0c\x45ventService\x12\x32\n\tGetEvents\x12\x11.GetEventsRequest\x1a\x12.GetEventsResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13line_provider.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"d\n\x05\x45vent\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\x05\x12,\n\x08\x64\x65\x61\x64line\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x06status\x18\x03 \x01(\x0e\x32\x0b.StatusEnum\"\x12\n\x10GetEventsRequest\"+\n\x11GetEventsResponse\x12\x16\n\x06\x65vents\x18\x01 \x03(\x0b\x32\x06.Event\"B\n\x1fUpdateEventStatusByScoreRequest\x12\x10\n\x08\x65vent_id\x18\x01 \x01(\x05\x12\r\n\x05score\x18\x02 \x01(\x05\"3\n UpdateEventStatusByScoreResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08*P\n\nStatusEnum\x12\x15\n\x11STATUS_PROCESSING\x10\x00\x12\x14\n\x10STATUS_LOW_SCORE\x10\x01\x12\x15\n\x11STATUS_HIGH_SCORE\x10\x02\x32\xa3\x01\n\x0c\x45ventService\x12\x32\n\tGetEvents\x12\x11.GetEventsRequest\x1a\x12.GetEventsResponse\x12_\n\x18UpdateEventStatusByScore\x12 .UpdateEventStatusByScoreRequest\x1a!.UpdateEventStatusByScoreResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'line_provider_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_STATUSENUM']._serialized_start=223
-  _globals['_STATUSENUM']._serialized_end=303
+  _globals['_STATUSENUM']._serialized_start=344
+  _globals['_STATUSENUM']._serialized_end=424
   _globals['_EVENT']._serialized_start=56
   _globals['_EVENT']._serialized_end=156
   _globals['_GETEVENTSREQUEST']._serialized_start=158
   _globals['_GETEVENTSREQUEST']._serialized_end=176
   _globals['_GETEVENTSRESPONSE']._serialized_start=178
   _globals['_GETEVENTSRESPONSE']._serialized_end=221
-  _globals['_EVENTSERVICE']._serialized_start=305
-  _globals['_EVENTSERVICE']._serialized_end=371
+  _globals['_UPDATEEVENTSTATUSBYSCOREREQUEST']._serialized_start=223
+  _globals['_UPDATEEVENTSTATUSBYSCOREREQUEST']._serialized_end=289
+  _globals['_UPDATEEVENTSTATUSBYSCORERESPONSE']._serialized_start=291
+  _globals['_UPDATEEVENTSTATUSBYSCORERESPONSE']._serialized_end=342
+  _globals['_EVENTSERVICE']._serialized_start=427
+  _globals['_EVENTSERVICE']._serialized_end=590
 # @@protoc_insertion_point(module_scope)

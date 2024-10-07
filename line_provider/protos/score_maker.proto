@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message ChangeScoreRequest {
+    int32 event_id = 1;
+    int32 score = 2;
+}
+
+message ScoreChangedResponse {
+    int32 event_id = 1;
+    bool success = 2;
+}
+
+service ScoreService {
+    rpc ChangeScore(ChangeScoreRequest) returns (ScoreChangedResponse);
+}

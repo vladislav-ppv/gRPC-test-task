@@ -13,6 +13,8 @@ grpcio = "^1.66.2"
 grpcio-tools = "^1.66.2"
 asyncpg = "^0.29.0"
 pydantic-settings = "^2.5.2"
+protobuf = "^5.28.2"
+google-cloud = "^0.34.0"
 
 
 [build-system]
