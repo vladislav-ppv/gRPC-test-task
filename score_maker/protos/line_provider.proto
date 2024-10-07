@@ -20,6 +20,16 @@ message GetEventsResponse {
     repeated Event events = 1;
 }
 
+message UpdateEventStatusByScoreRequest {
+    int32 event_id = 1;
+    int32 score = 2;
+}
+
+message UpdateEventStatusByScoreResponse {
+    bool success = 1;
+}
+
 service EventService {
     rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
+    rpc UpdateEventStatusByScore(UpdateEventStatusByScoreRequest) returns (UpdateEventStatusByScoreResponse);
 }

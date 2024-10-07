@@ -25,7 +25,7 @@ services:
     build:
       dockerfile: arq_worker.Dockerfile
     volumes:
-      - ./arq-worker:/app
+      - ./arq-worker:/app/arq-worker
     depends_on:
       - redis
 
