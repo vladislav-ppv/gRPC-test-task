@@ -1,6 +1,6 @@
 import logging
 
-import redis
+from redis.asyncio.client import Redis
 from arq import cron, Retry
 from arq.connections import RedisSettings
 from celery import Celery
@@ -11,7 +11,7 @@ from src.database.models import ScoreOutboxModel
 from src.config import settings
 
 logger = logging.getLogger(__name__)
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
+redis_client: Redis = Redis.from_url(settings.redis.build_url())
 
 
 async def process_score(ctx, event_id: int, rate: int):
@@ -32,7 +32,7 @@ async def process_score(ctx, event_id: int, rate: int):
     # Acquire lock
     lock_key = f"lock:{event_id}"
 
-    lock_acquired = redis_client.setnx(lock_key, 1)  # returns 1 if lock acquired successfully
+    lock_acquired = await redis_client.setnx(lock_key, 1)  # returns 1 if lock acquired successfully
     if not lock_acquired:
         logger.info(f"Task for event_id {event_id} is already running. Skipping.")
         return
