@@ -2,13 +2,15 @@ import logging
 
 from redis.asyncio.client import Redis
 from arq import cron, Retry
-from arq.connections import RedisSettings
-from celery import Celery
+from arq.connections import RedisSettings, create_pool
 from sqlalchemy import select
 
+from arq_worker.src.dependencies.grpc.score import process_score_grpc
+from arq_worker.src.services.exceptions import UpdateEventByScoreResponseIsNotSuccess
 from src.database.core import async_session
 from src.database.models import ScoreOutboxModel
 from src.config import settings
+from arq_worker.src.services.utils import on_job_failure, on_startup
 
 logger = logging.getLogger(__name__)
 redis_client: Redis = Redis.from_url(settings.redis.build_url())
@@ -24,7 +26,7 @@ async def process_score(ctx, event_id: int, rate: int):
     The task performs some score processing logic and updates the status in the database.
     Finally, the lock is released.
 
-    :param self: The Celery task instance.
+    :param ctx: The Arq context.
     :param event_id: The event ID to process.
     :param rate: The rate to process .
     """
@@ -38,15 +40,16 @@ async def process_score(ctx, event_id: int, rate: int):
         return
 
     try:
-        logging.info("MOCK gRPC request with processing score")
+        success: bool = await process_score_grpc(event_id, rate)
+        if not success:
+            raise UpdateEventByScoreResponseIsNotSuccess("Response from server is not successful")
 
         # Update status in the database
         async with async_session() as session:
-            query = session.query(ScoreOutboxModel).filter_by(event_id=event_id)
+            query = select(ScoreOutboxModel).filter_by(event_id=event_id)
             result = await session.execute(query)
 
             score: list[ScoreOutboxModel] = result.scalars().first()
-            score.processed = True
             session.add(score)
 
             await session.commit()
@@ -61,6 +64,8 @@ async def process_score(ctx, event_id: int, rate: int):
 
 
 async def check_outbox(ctx):
+    arq_redis = await create_pool(RedisSettings.from_dsn(settings.redis.build_url()))
+
     async with async_session() as session:
         query = select(ScoreOutboxModel).filter_by(processed=False)
         result = await session.execute(query)
@@ -68,11 +73,9 @@ async def check_outbox(ctx):
         logging.info(scores)
 
         for score in scores:
-            # Отправляем задачу на обработку в Worker
-            logging.info("MOCK sending task to process_score")
-            # app.send_task("process_score", args=(score.event_id, score.rate))
+            # Send task to Arq Worker
+            await arq_redis.enqueue_job("process_score", score.event_id, score.rate)
 
-            # Обновляем статус обработки
             score.processed = True
             session.add(score)
 
@@ -81,7 +84,7 @@ async def check_outbox(ctx):
 
 class WorkerSettings:
     functions = [check_outbox, process_score]
-    redis_settings: RedisSettings = RedisSettings()
+    redis_settings: RedisSettings = RedisSettings.from_dsn(settings.redis.build_url())
     cron_jobs = [
         cron(check_outbox, name="Check outbox table every 5 seconds", second=5)
     ]
