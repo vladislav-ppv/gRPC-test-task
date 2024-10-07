@@ -13,6 +13,8 @@ celery = "^5.4.0"
 pydantic-settings = "^2.5.2"
 asyncpg = "^0.29.0"
 arq = "^0.26.1"
+grpcio = "^1.66.2"
+grpcio-tools = "^1.66.2"
 
 [build-system]
 requires = ["poetry-core"]
