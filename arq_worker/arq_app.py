@@ -86,5 +86,9 @@ class WorkerSettings:
     functions = [check_outbox, process_score]
     redis_settings: RedisSettings = RedisSettings.from_dsn(settings.redis.build_url())
     cron_jobs = [
-        cron(check_outbox, name="Check outbox table every 5 seconds", second=5)
+        cron(check_outbox,
+             name=f"Check outbox table every {settings.arq_settings.CHECK_OUTBOX_SECONDS_INTERVAL} seconds",
+             second=settings.arq_settings.CHECK_OUTBOX_SECONDS_INTERVAL)
     ]
+    on_startup = on_startup
+    on_job_failure = on_job_failure

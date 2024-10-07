@@ -10,6 +10,10 @@ class BaseSettings(BaseSettings_):
     )
 
 
+class ArqSettings(BaseSettings, env_prefix="CRON_"):
+    CHECK_OUTBOX_SECONDS_INTERVAL: int
+
+
 class CelerySettings(BaseSettings):
     @staticmethod
     def build_celery_broker_url() -> str:
@@ -20,13 +24,13 @@ class CelerySettings(BaseSettings):
         return settings.redis.build_url()
 
 
-class RedisSettings(BaseSettings):
-    REDIS_HOST: str
-    REDIS_PORT: int
-    REDIS_DB: str
+class RedisSettings(BaseSettings, env_prefix="REDIS_"):
+    HOST: str
+    PORT: int
+    DB: str
 
     def build_url(self) -> str:
-        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+        return f"redis://{self.HOST}:{self.PORT}/{self.DB}"
 
 
 class PostgresSettings(BaseSettings, env_prefix="POSTGRES_"):
@@ -51,6 +55,7 @@ class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
     redis: RedisSettings = RedisSettings()
     celery_settings: CelerySettings = CelerySettings()
+    arq_settings: ArqSettings = ArqSettings()
 
 
 settings = Settings()
