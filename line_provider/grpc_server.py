@@ -1,6 +1,5 @@
 import asyncio
 import logging
-from concurrent import futures
 
 import grpc
 
@@ -19,15 +18,20 @@ async def on_start():
         await conn.run_sync(Base.metadata.create_all)
 
 
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+async def serve():
+    server = grpc.aio.server()
     add_EventServiceServicer_to_server(EventServicer(), server)
     server.add_insecure_port('[::]:50051')
-    server.start()
-    server.wait_for_termination()
+    await server.start()
+    print("gRPC server is running on port 50051...")
+    await server.wait_for_termination()
+
+
+async def main():
+    await on_start()
+    await serve()
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    asyncio.run(on_start())
-    serve()
+    asyncio.run(main())
