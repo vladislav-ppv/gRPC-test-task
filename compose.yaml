@@ -13,19 +13,11 @@ services:
     ports:
       - "8002:8000"
 
-  arq-cron:
-    build:
-      dockerfile: arq_cron.Dockerfile
-    volumes:
-      - ./arq_cron:/app
-    depends_on:
-      - redis
-
   arq-worker:
     build:
       dockerfile: arq_worker.Dockerfile
     volumes:
-      - ./arq-worker:/app/arq-worker
+      - ./arq_worker:/app/arq-worker
     depends_on:
       - redis
 

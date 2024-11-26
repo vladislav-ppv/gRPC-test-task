@@ -54,7 +54,6 @@ class PostgresSettings(BaseSettings, env_prefix="POSTGRES_"):
 class Settings(BaseSettings):
     postgres: PostgresSettings = PostgresSettings()
     redis: RedisSettings = RedisSettings()
-    celery_settings: CelerySettings = CelerySettings()
     arq_settings: ArqSettings = ArqSettings()
 
 
