@@ -1,4 +1,79 @@
-# gRPCTestTask
+# EN 🇺🇸 gRPCTestTask
+
+## Description
+
+`gRPCTestTask` is a system for receiving user ratings for specific events. The system consists of two independent microservices:
+
+- **line-provider**: a service that provides information about events.
+- **score-maker**: a service that receives user ratings for these events.
+
+Both services operate independently, each with its own database. To ensure data consistency between them, the **SAGA pattern** and **Transactional Outbox pattern** are used.
+
+Dependency management for each service is handled using **Poetry**.
+
+## Technologies
+
+- **FastAPI**: a framework for developing APIs.
+- **gRPC**: a protocol for efficient communication between services.
+- **Redis**: used for caching and message queues.
+- **PostgreSQL**: a relational database for storing event and rating data.
+- **SQLAlchemy**: ORM for interacting with the database.
+- **Poetry**: a tool for dependency management and packaging in Python.
+
+## Installation
+
+To run the project on your local machine, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/vladislav-ppv/gRPC-test-task
+   ```
+2. Navigate to the project directory:
+    ```bash
+    cd gRPC-test-task
+    ```
+
+4. In the score_maker, line_provider, and arq_worker modules, create text files named .env.
+
+5. Fill in these files using the .env_example provided in each module as a reference.
+
+6. Make sure Docker Compose is installed. If not, follow the official installation guide.
+
+7. Build and run all containers:
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+7. To view logs, use the command:
+    ```bash
+    docker compose logs -f
+    ```
+    
+8. In a new terminal tab or API client (e.g., Postman), send a GET request to the following address:
+
+    ```bash
+    http://localhost:8002/events
+    ```
+If you receive a 200 OK response, everything is working correctly — you’re awesome.
+
+9.	To view the automatically generated API documentation, open in your browser:
+
+    ```bash
+    http://localhost:8002/docs
+    ```
+
+### Features
+Microservice architecture: Each service has its own database.
+Transactional consistency: The SAGA pattern with Transactional Outbox is used to synchronize data between services.
+Automatic documentation: The API is automatically documented using FastAPI and available at http://localhost:8002/docs.
+### Request Examples
+GET /events: Retrieve a list of available events.
+
+POST /events/{event_id}/score: Submit a rating for an event.
+
+# RU 🇷🇺 gRPCTestTask
 
 ## Описание
 
